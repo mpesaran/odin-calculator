@@ -8,15 +8,7 @@ const screen = document.querySelector(".calculator-screen")
 const clearButton = document.getElementById('clear')
 const operatorButtons = document.querySelectorAll('.operator')
 const equalsButton = document.getElementById('equals')
-const decimalButton = document.getElementById('decimal')
 
-// decimalButton.addEventListener('click', () => {
-//     if (!currentValue.contains('.')) {
-//         // currentValue += '.';
-//         screen.textContent = currentValue;
-//         decimalButton.disabled = true;
-//     }
-// })
 
 numberButtons.forEach(button => {
     button.addEventListener('click', () => {
@@ -60,7 +52,6 @@ function handleNumberClick(number) {
     if (shouldReset) {
         currentValue = '';
         shouldReset = false;
-        // resetDecimal();
     }
     if (number === '.' && currentValue.includes('.')) {
         return; // If there's already a decimal in the currentValue, do nothing
@@ -92,8 +83,7 @@ function handleEqualsClick() {
         currentValue = result;
         operator = null;
         firstNumber = null;
-        shouldReset = true;
-        resetDecimal()
+        shouldReset = true; 26
     }
 }
 
@@ -105,6 +95,24 @@ function handleClearClick() {
     screen.textContent = '0'
 }
 
-function resetDecimal() {
-    decimalButton.disabled = false;  // Enable the decimal button after each operation
-}
+// adding eventlisteners to the buttons for keyboard support
+
+document.addEventListener('keydown', (event) => {
+    const key = event.key;
+
+    if (/\d/.test(key) || key === ".") {
+        handleNumberClick(key)
+    }
+
+    if (['+', "-", "*", "/"].includes(key)) {
+        handleOperatorClick(key)
+    }
+
+    if (key === "=" || key === "Enter") {
+        handleEqualsClick()
+    }
+    if (key === "Escape") {
+        handleClearClick()
+    }
+
+})
